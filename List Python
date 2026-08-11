@@ -1,0 +1,21 @@
+#List
+number = [1, 2, 3, 4, 5]
+print(f"The numbers is {number}")
+number.insert(2,7)
+print(f"Result of insert method is {number}")
+
+#sort
+number.sort()
+print(f"The result of sort method is {number}")
+
+#remove
+number.remove(3)
+print(f"The result of remove method is {number}")
+
+#pop
+number.pop()
+print(f"The result of pop method is {number}")
+
+#append
+number.append(6)
+print(f"The result of append method is {number}")
