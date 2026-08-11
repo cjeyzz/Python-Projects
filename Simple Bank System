@@ -1,0 +1,152 @@
+import json
+import os
+
+file_name = "Bank_account_system.json"
+
+# Initialize file if it doesn't exist
+if not os.path.exists(file_name):
+    with open(file_name, "w") as file:
+        json.dump({}, file)
+
+
+def load_data():
+    with open(file_name, "r") as file:
+        return json.load(file)
+
+
+def save_data(data):
+    with open(file_name, "w") as file:
+        json.dump(data, file, indent=4)
+
+
+def create_account():
+    data = load_data()
+    account_name = input("Enter an Account Name: ")
+
+    if account_name in data:
+        print("\nAn account with this name already exists!\n")
+        return
+
+    bank_name = input("Enter your Bank name: ")
+    password = input("Enter your password: ")
+
+    data[account_name] = {
+        "bank_name": bank_name,
+        "password": password,
+        "balance": 0.0
+    }
+    save_data(data)
+    print("\nAccount Registered!\n")
+
+
+def deposit():
+    data = load_data()
+    account_name = input("Enter your account name: ")
+    password = input("Enter your password: ")
+
+    if account_name in data:
+        if data[account_name]["password"] == password:
+            print("\nStored Credential Verified.")
+            try:
+                amount = float(input("Enter how much you deposit: "))
+                if amount > 0:
+                    data[account_name]["balance"] += amount
+                    save_data(data)
+                    print(f"Successfully deposited ${amount:.2f}. New balance: ${data[account_name]['balance']:.2f}\n")
+                else:
+                    print("Invalid deposit. Amount must be greater than 0.\n")
+            except ValueError:
+                print("Please enter a valid number.\n")
+        else:
+            print("Incorrect password.\n")
+    else:
+        print("\nNo credential found.\n")
+
+
+def withdraw():
+    data = load_data()
+    account_name = input("Enter your account name: ")
+    password = input("Enter your password: ")
+
+    if account_name in data:
+        if data[account_name]["password"] == password:
+            print("\nStored Credential Verified.")
+            try:
+                amount = float(input("Enter how much you want to withdraw: "))
+                if amount <= 0:
+                    print("Invalid withdrawal. Amount must be greater than 0.\n")
+                elif amount > data[account_name]["balance"]:
+                    print(f"Insufficient funds. Your current balance is ${data[account_name]['balance']:.2f}\n")
+                else:
+                    data[account_name]["balance"] -= amount
+                    save_data(data)
+                    print(
+                        f"Successfully withdrew ${amount:.2f}. Remaining balance: ${data[account_name]['balance']:.2f}\n")
+            except ValueError:
+                print("Please enter a valid number.\n")
+        else:
+            print("Incorrect password.\n")
+    else:
+        print("\nNo credential found.\n")
+
+
+def check_balance():
+    data = load_data()
+    account_name = input("Enter your account name: ")
+    password = input("Enter your password: ")
+
+    if account_name in data:
+        if data[account_name]["password"] == password:
+            print(f"\nYour current balance is: ${data[account_name]['balance']:.2f}\n")
+        else:
+            print("Incorrect password.\n")
+    else:
+        print("\nNo credential found.\n")
+
+
+def view_account_details():
+    data = load_data()
+    account_name = input("Enter your account name: ")
+    password = input("Enter your password: ")
+
+    if account_name in data:
+        if data[account_name]["password"] == password:
+            print(f"\n--- Account Details ---")
+            print(f"Account Name: {account_name}")
+            print(f"Bank Name: {data[account_name]['bank_name']}")
+            print(f"Current Balance: ${data[account_name]['balance']:.2f}\n")
+        else:
+            print("Incorrect password.\n")
+    else:
+        print("\nNo credential found.\n")
+
+def main():
+    while True:
+        print("1.) Create Account")
+        print("2.) Deposit")
+        print("3.) Withdraw")
+        print("4.) Check balance")
+        print("5.) View Account Details")
+        print("6.) Exit")
+
+        choice = input("Enter your number choice: ")
+
+        if choice == "1":
+            create_account()
+        elif choice == "2":
+            deposit()
+        elif choice == "3":
+            withdraw()
+        elif choice == "4":
+            check_balance()
+        elif choice == "5":
+            view_account_details()
+        elif choice == "6":
+            print("Exiting program...")
+            break
+        else:
+            print("Invalid input. Please try again.\n")
+
+
+if __name__ == "__main__":
+    main()
