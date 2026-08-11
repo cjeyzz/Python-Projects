@@ -1,0 +1,21 @@
+n1 = int(input("Enter your first number: "))
+operator = input("Choose an operator: (+), (-), (*), (/) ")
+while operator not in ['+', '-', '*', '/']:
+    print("Invalid input, please type again ")
+    operator = input("Choose an operator: (+), (-), (*), (/) ")
+n2 = int(input("Enter the second number : "))
+
+addition = n1 + n2
+subtraction = n1 - n2
+multiplication = n1 * n2
+divide = n1 / n2
+
+
+if operator == "+":
+    print(f"{n1} plus {n2} is = {addition}")
+elif operator == "-":
+    print(f"{n1} subtracted by {n2} is = {subtraction}")
+elif operator == "*":
+    print(f"({n1} multiplied by {n2} is = {multiplication})")
+else:
+    print(f"{n1} divided by {n2} is = {divide}")
