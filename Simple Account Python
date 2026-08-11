@@ -1,0 +1,61 @@
+import json
+import os
+
+file_name = "passwords.json"
+
+if not os.path.exists(file_name):
+    with open(file_name, "w") as file:
+        json.dump({}, file)
+
+def load_data():
+    with open(file_name, "r") as file:
+        return json.load(file)
+
+def save_data(data):
+    with open(file_name, "w") as file:
+        json.dump(data, file, indent=4)
+
+def add_password():
+    data = load_data()
+    website = input("Enter website name:")
+    username = input("Enter username : ")
+    password = input("Enter password: ")
+
+    print("\nAccount was Saved!\n")
+
+
+    data [website] = {
+        "username": username,
+        "password": password
+    }
+    save_data(data)
+
+def view_passwords():
+    data = load_data()
+    website = input("Enter website name: ")
+    if website not in data:
+        print("Website not found.")
+    
+    else:
+        account = data[website]
+        print(f"Username: {account['username']}")
+        print(f"Password: {account['password']}")
+
+def main():
+    data = load_data()
+    while True:
+        print("1. Add account ")
+        print("2. View accounts ")
+        print("3. Exit")
+
+        choice = input("Enter your choice: ")
+
+        if choice == "1":
+            add_password()
+        elif choice == "2":
+            view_passwords()
+        elif choice == "3":
+            break
+        else:
+            print("Invalid input. Please try again.")
+main()
