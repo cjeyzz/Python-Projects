@@ -1,0 +1,144 @@
+import random
+import os
+import json
+
+file_name = "accounts.json"
+
+if not os.path.exists(file_name) or os.path.getsize(file_name) == 0:
+    with open(file_name, "w") as file:
+        json.dump({}, file)
+
+
+def load_data():
+    with open(file_name, "r") as file:
+        try:
+            return json.load(file)
+        except json.JSONDecodeError:
+            return {} 
+
+
+def save_data(data):
+    with open(file_name, "w") as file:
+        json.dump(data, file, indent=4)
+
+print("""
+Welcome to Kustar where you can enjoy playing games and have fun with your friends.
+
+Hope you have a great time here!
+""")
+
+def register():
+    data = load_data()
+    
+    while True:
+        username = input("Enter your username:  ")
+        if len(username) < 3:
+            print("Username is too short. Please try again.")
+        elif len(username) > 10:
+            print("Username is too long. Please try again.")
+        else:
+            print("\nAccount was Saved!\n")
+            data[username] = {"username": username}
+            save_data(data)
+            return username  
+
+
+def rock_paper_scissors(user_name):
+    print("====== Rock Paper Scissors Game ======")
+    print(f"Welcome {user_name} to Rock, Paper, Scissors!")
+
+    moves = ["rock", "paper", "scissors"]
+
+    while True:
+        user_move = input("Enter your move (rock, paper, scissors or exit): ").lower()
+        computer_move = random.choice(moves)
+
+        if user_move == "exit":
+            print(f"Thank you {user_name} for playing this game!")
+            print("Exiting the game...")
+            break
+
+        if user_move not in moves:
+            print("Invalid move! Try again.")
+            continue
+
+        print(f"Computer chose {computer_move}.")
+
+        if user_move == computer_move:
+            print(f"It's a tie! Both chose {computer_move}.")
+        elif (user_move == "rock" and computer_move == "scissors") or \
+             (user_move == "scissors" and computer_move == "paper") or \
+             (user_move == "paper" and computer_move == "rock"):
+            print(f"You win! {user_move} beats {computer_move}.")
+        else:
+            print(f"You lose! {computer_move} beats {user_move}.")
+
+def guessing_game():
+    print("====== Guessing Game ======")
+    print("""
+Welcome to the guessing game!
+I have selected a number between 1 and 10. Can you guess it?
+""")
+ 
+    number = random.randint(1, 10)
+    attempts = 0
+
+    while True:
+        guess = input("Enter your guess: ")
+        attempts += 1
+
+        if not guess.isdigit():
+            print("Please enter a valid number.")
+            continue
+
+        guess = int(guess)
+
+        if guess < number:
+            print("Too low! Try again.")
+        elif guess > number:
+            print("Too high! Try again.")
+        else:
+            print(f"Congratulations! You guessed the number {number} in {attempts} attempts.")
+            break
+
+def game(user_name):
+    while True:
+        print("Welcome to the Games!")
+        print("Choose a game you want to play:")
+        print("1.) Rock Paper Scissors")
+        print("2.) Guessing Game")
+        print("3.) Back to main menu")
+
+        game_choice = input("Enter your choice: ")
+        if game_choice == "1":
+            rock_paper_scissors(user_name)
+        elif game_choice == "2":
+            guessing_game()
+        elif game_choice == "3":
+            return
+        else:
+            print("Invalid choice. Please try again.")
+
+def main():
+    user_name = None
+    while True:
+        print("1.) Register")
+        print("2.) Play Game")
+        print("3.) Exit")
+        print("")
+
+        choice = input("Enter your choice: ")
+        if choice == "1":
+            user_name = register()
+        elif choice == "2":
+            if user_name:
+                game(user_name)
+            else:
+                print("You need to register first!")
+        elif choice == "3":
+            print("Exiting...")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+main()
