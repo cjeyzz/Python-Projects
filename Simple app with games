@@ -73,6 +73,108 @@ def rock_paper_scissors(user_name):
         else:
             print(f"You lose! {computer_move} beats {user_move}.")
 
+def hangman_game():
+    print("====== Hangman Game ======")
+    print("""
+Welcome to the Hangman Game!
+You have to guess the word by suggesting letters within a certain number of guesses.
+
+You only have 6 wrong guesses before you lose the game. Good luck!
+
+Guess this animal name!
+""")
+    words = (
+    "elephant", "giraffe", "penguin", "kangaroo", "dolphin",
+    "cheetah", "leopard", "octopus", "hamster", "gorilla",
+    "alligator", "flamingo", "ostrich", "squirrel", "hedgehog",
+    "platypus", "chimpanzee", "crocodile", "hippopotamus", "rhinoceros",
+    "wolverine", "meerkat", "koala", "kangaroo", "chameleon",
+    "axolotl", "badger", "capybara", "porcupine", "jellyfish",
+    "starfish", "seahorse", "lobster", "walrus", "manatee",
+    "panther", "jaguar", "hyena", "baboon", "lemur",
+    "armadillo", "anteater", "sloth", "buffalo", "antelope",
+    "peacock", "pelican", "woodpecker", "toucan", "owl"
+)
+
+    hangman_art = {0:("  "), 
+    1:(" O ",
+       "  ",
+       "  "), 
+    2:(" O ",
+       " | ",
+       "  ",), 
+    3:(" O ",
+       "/| ",
+       "  "), 
+    4:(" O ",
+       "/|\\",
+       "  "), 
+    5:(" O ",
+       "/|\\",
+       "/ "), 
+    6:(" O ",
+       "/|\\",
+       "/ \\")}
+
+    def display_man(wrong_guesses):
+        for line in hangman_art[wrong_guesses]:
+            print(line)
+
+    def display_hint(hint):
+        print(" ".join(hint))
+
+    def display_answer(answer):
+        print(f"The answer was: {answer}")
+
+
+    def main():
+        answer = random.choice(words)
+        hint = ["_"] * len(answer)
+        wrong_guesses = 0
+        guessed_letters = set()
+        is_running = True
+
+        while is_running:
+            display_man(wrong_guesses)
+            display_hint(hint)
+            guess = input("Enter a letter: ").lower()
+
+            if len(guess) !=1 or not guess.isalpha():
+                print("Invalid input. Please try again")
+                continue
+
+            if guess in guessed_letters:
+                print(f"You have already guessed '{guess}'. Try again.")
+                continue
+
+            guessed_letters.add(guess)
+
+            if guess in answer:
+                for i in range(len(answer)):
+                    if answer[i].lower() == guess:
+                        hint[i] = guess
+
+            else:
+                wrong_guesses += 1
+
+            if "_" not in hint:
+                display_man(wrong_guesses)
+                display_answer(answer)
+                print("YOU WIN!")
+                is_running = False
+            elif wrong_guesses >= len(hangman_art) - 1:
+                display_man(wrong_guesses)
+                display_answer(answer)
+                print("YOU  LOSE!")
+                is_running = False
+
+
+    if __name__ == "__main__":
+        main()
+
+
+
+
 def guessing_game():
     print("====== Guessing Game ======")
     print("""
@@ -107,7 +209,8 @@ def game(user_name):
         print("Choose a game you want to play:")
         print("1.) Rock Paper Scissors")
         print("2.) Guessing Game")
-        print("3.) Back to main menu")
+        print("3.) Hangman Game")
+        print("4.) Back to main menu")
 
         game_choice = input("Enter your choice: ")
         if game_choice == "1":
@@ -115,7 +218,7 @@ def game(user_name):
         elif game_choice == "2":
             guessing_game()
         elif game_choice == "3":
-            return
+            hangman_game()
         else:
             print("Invalid choice. Please try again.")
 
@@ -142,3 +245,4 @@ def main():
             print("Invalid choice. Please try again.")
 
 main()
+                       
