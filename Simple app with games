@@ -44,9 +44,17 @@ def register():
 
 
 def rock_paper_scissors(user_name):
-    print("====== Rock Paper Scissors Game ======")
-    print(f"Welcome {user_name} to Rock, Paper, Scissors!")
+    print(f"""
+====== Rock Paper Scissors Game ======
 
+Welcome {user_name} to Rock, Paper, Scissors!")
+
+Your opponent for this game is computer. You can play as many rounds as you want,
+and you can exit the game at any time by typing 'exit'.
+
+Hope you enjoy the game and have fun! Good luck!
+
+""")
     moves = ["rock", "paper", "scissors"]
 
     while True:
@@ -81,20 +89,10 @@ You have to guess the word by suggesting letters within a certain number of gues
 
 You only have 6 wrong guesses before you lose the game. Good luck!
 
-Guess this animal name!
+Guess this fruit name!
 """)
-    words = (
-    "elephant", "giraffe", "penguin", "kangaroo", "dolphin",
-    "cheetah", "leopard", "octopus", "hamster", "gorilla",
-    "alligator", "flamingo", "ostrich", "squirrel", "hedgehog",
-    "platypus", "chimpanzee", "crocodile", "hippopotamus", "rhinoceros",
-    "wolverine", "meerkat", "koala", "kangaroo", "chameleon",
-    "axolotl", "badger", "capybara", "porcupine", "jellyfish",
-    "starfish", "seahorse", "lobster", "walrus", "manatee",
-    "panther", "jaguar", "hyena", "baboon", "lemur",
-    "armadillo", "anteater", "sloth", "buffalo", "antelope",
-    "peacock", "pelican", "woodpecker", "toucan", "owl"
-)
+    words = ("apple", "banana", "orange", "grape", "strawberry", "watermelon", "pineapple", 
+             "mango", "peach", "cherry", "lemon", "lime", "blueberry", "pear", "plum")
 
     hangman_art = {0:("  "), 
     1:(" O ",
@@ -117,8 +115,10 @@ Guess this animal name!
        "/ \\")}
 
     def display_man(wrong_guesses):
+        print("**********")
         for line in hangman_art[wrong_guesses]:
             print(line)
+        print("**********")
 
     def display_hint(hint):
         print(" ".join(hint))
@@ -205,12 +205,15 @@ I have selected a number between 1 and 10. Can you guess it?
 
 def game(user_name):
     while True:
-        print("Welcome to the Games!")
-        print("Choose a game you want to play:")
-        print("1.) Rock Paper Scissors")
-        print("2.) Guessing Game")
-        print("3.) Hangman Game")
-        print("4.) Back to main menu")
+        print("""
+======Games Menu======
+
+1.) Rock Paper Scissors
+2.) Guessing Game
+3.) Hangman Game
+4.) Back to main menu
+
+""")
 
         game_choice = input("Enter your choice: ")
         if game_choice == "1":
@@ -219,15 +222,21 @@ def game(user_name):
             guessing_game()
         elif game_choice == "3":
             hangman_game()
+        elif game_choice == "4":
+            main()
         else:
             print("Invalid choice. Please try again.")
+
+def settings():
+    print("Settings menu is under process. Please check back later.")
 
 def main():
     user_name = None
     while True:
         print("1.) Register")
         print("2.) Play Game")
-        print("3.) Exit")
+        print("3.) Settings")
+        print("4.) Exit")
         print("")
 
         choice = input("Enter your choice: ")
@@ -239,6 +248,8 @@ def main():
             else:
                 print("You need to register first!")
         elif choice == "3":
+            settings()
+        elif choice == "4":
             print("Exiting...")
             break
         else:
